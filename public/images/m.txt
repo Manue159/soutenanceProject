@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {# Run `composer require symfony/webpack-encore-bundle`
+           and uncomment the following Encore helpers to start using Symfony UX #}
+        {% block stylesheets %}
+            {#{{ encore_entry_link_tags('app') }}#}
+        {% endblock %}
+
+        {% block javascripts %}
+            {#{{ encore_entry_script_tags('app') }}#}
+        {% endblock %}
+    </head>
+    <body>
+        <nav class="">
+            <div class="">
+                <a href="{{path('home')}}">
+                    <img src="{{ asset('images/logo.png') }}" alt="logoCFAO">
+                </a>
+            </div>
+            <div class="n">          
+                    <a href="{{path('home')}}">Accueil</a>
+                    <a href="{{path('employe_index')}}">Personnel</a>
+                    <a href="{{path('materiel_index')}}">Matériel</a>
+                    <a href="{{path('panne_index')}}">Pannes</a>
+                    <a href="{{path('faq')}}">FAQ</a>
+	{% if app.user %}
+                    <a href="{{path('app_logout')}}">Déconnexion</a>
+                {% else %}
+                    <a href="{{path('app_login')}}">Connexion</a>
+                {% endif %}
+            </div>
+        </nav>
+        {% block body %}{% endblock %}
+    </body>
+</html>

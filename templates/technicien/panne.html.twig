@@ -1,0 +1,142 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pannes
+{% endblock %}
+
+{% block body %}
+
+	<div id="portfolio" class="our-portfolio section">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6 offset-lg-3">
+					<div class="section-heading  wow bounceIn" data-wow-duration="1s" data-wow-delay="0.2s">
+						<h2>
+							<em>Historique</em>
+							des
+							<span>Pannes</span>
+						</h2>
+					</div>
+					<div class="text-center" style="margin-bottom: 20%">
+						<a class="btn btn-primary" href="{{ path('submit-panne') }}">Soumettre une panne</a>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				{% for panne in pannes %}
+					<div class="col-lg-3 col-sm-6">
+						<a href="#">
+							<div class="item wow bounceInUp" data-wow-duration="1s" data-wow-delay="0.3s">
+								<div class="hidden-content">
+									<h4>SEO Analysis</h4>
+									<p>{{ panne.description }}</p>
+								</div>
+								<div class="showed-content">
+									<div>
+										<h3>
+											{{panne.type}}
+										</h3>
+										{% if panne.etat == "réparée" %}
+											<button class="btn btn-success">Réparée</button>
+										{% elseif panne.etat == "non réparée" %}
+											<button class="btn btn-danger">Non Réparée</button>
+										{% endif %}
+									</div>
+									<div>
+										<button>Modifier état</button>
+									</div>
+								</div>
+							</div>
+						</a>
+					</div>
+				{% endfor %}
+				<div class="col-lg-3 col-sm-6">
+					<a href="#">
+						<div class="item wow bounceInUp" data-wow-duration="1s" data-wow-delay="0.4s">
+							<div class="hidden-content">
+								<h4>Website Reporting</h4>
+								<p>Lorem ipsum dolor sit ameti ctetur aoi adipiscing eto.</p>
+							</div>
+							<div class="showed-content">
+								<img src="{{asset('images/portfolio-image.png')}}" alt="">
+							</div>
+						</div>
+					</a>
+				</div>
+				<div class="col-lg-3 col-sm-6">
+					<a href="#">
+						<div class="item wow bounceInUp" data-wow-duration="1s" data-wow-delay="0.5s">
+							<div class="hidden-content">
+								<h4>Performance Tests</h4>
+								<p>Lorem ipsum dolor sit ameti ctetur aoi adipiscing eto.</p>
+							</div>
+							<div class="showed-content">
+								<img src="{{asset('images/portfolio-image.png')}}" alt="">
+							</div>
+						</div>
+					</a>
+				</div>
+				<div class="col-lg-3 col-sm-6">
+					<a href="#">
+						<div class="item wow bounceInUp" data-wow-duration="1s" data-wow-delay="0.6s">
+							<div class="hidden-content">
+								<h4>Data Analysis</h4>
+								<p>Lorem ipsum dolor sit ameti ctetur aoi adipiscing eto.</p>
+							</div>
+							<div class="showed-content">
+								<img src="{{asset('images/portfolio-image.png')}}" alt="">
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+			<div class="modal fade" id="addPanneModal" tabindex="-1" role="dialog" aria-labelledby="addPanneModalLabel" aria-hidden="true" style="top: 100px!important;">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content" style="min-height: 425px;">
+						<div class="modal-header">
+							<h5 class="modal-title" id="addPanneModalLabel">Soumettre une panne</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<form id="" action="{{ path('submit-panne')}}" method="post">
+								<div class="row">
+									<div class="col-lg-12">
+										<fieldset>
+											<input type="text" placeholder="Email" name="typePanne" id="typePanne" class="form-control" required>
+										</fieldset>
+									</div>
+									<div class="col-lg-12" style="margin-bottom: 5%">
+										<fieldset>
+											<input type="password" placeholder="Décrrivez la panne" name="description" id="descriptionPanne" class="form-control" required>
+										</fieldset>
+									</div>
+									<div class="col-lg-12" style="margin-bottom: 5%">
+										<fieldset>
+											<div class="form-group mb-4">
+												<select name="matérielEnPanne" id="matérielEnPanne" required>
+													<option value="">Choisissez votre statut</option>
+													<option value="Disponible">Disponible</option>
+													<option value="Malade">Malade</option>
+													<option value="Mission">Mission</option>
+													<option value="Permissionnaire">Permissionnaire</option>
+													<option value="Sur Site">Sur Site</option>
+												</select>
+											</div>
+										</fieldset>
+									</div>
+									<div class="col-lg-12 text-center">
+										<fieldset>
+											<button type="submit" id="form-submit" class="main-button">Soumettre</button>
+										</fieldset>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

@@ -1,0 +1,254 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pannes
+{% endblock %}
+
+{% block body %}
+
+	<div id="portfolio" class="our-portfolio section">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6 offset-lg-3">
+					<div class="section-heading  wow bounceIn" data-wow-duration="1s" data-wow-delay="0.2s">
+						<h2>
+							<em>Historique</em>
+							des
+							<span>Pannes</span>
+						</h2>
+					</div>
+					<div class="text-center" style="margin-bottom: 20%">
+						<a class="btn btn-primary" onclick="addPanne()">Soumettre une panne</a>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				{% for pannes in pannesList %}
+					{% set panne = pannes.panne %}
+					{% set nomEmploye = pannes.nomEmploye %}
+					{% set prenomEmploye = pannes.prenomEmploye %}
+					<div class="col-lg-3 col-sm-6" style="margin-bottom: 5%">
+						<a href="#">
+							<div class="item wow bounceInUp" data-wow-duration="1s" data-wow-delay="0.3s">
+								<div class="hidden-content">
+									<p>{{ panne.description }}</p>
+								</div>
+								<div class="showed-content">
+									<p>
+										Panne {{panne.type}} soumise par {{nomEmploye}} {{prenomEmploye}}
+									</p>
+									{% if panne.etat == "réparée" %}
+										<button class="btn btn-primary">Réparée</button>
+									{% elseif panne.etat == "non réparée" %}
+										<button class="btn btn-danger">Non Réparée</button>
+									{% endif %}
+								</div>
+							</div>
+							<div class="text-center" style="margin-top: 5%">
+								<button class="btn btn-primary" onclick="updatePanne('{{panne.id}}', '{{panne.type}}', '{{panne.description}}', '{{panne.etat}}')">Modifier</button>
+								<button class="btn btn-danger" onclick="deletePanne('{{ panne.id }}')">Supprimer</button>
+							</div>
+						</a>
+					</div>
+				{% endfor %}
+				<div class="col-lg-3 col-sm-6">
+					<a href="#">
+						<div class="item wow bounceInUp" data-wow-duration="1s" data-wow-delay="0.4s">
+							<div class="hidden-content">
+								<h4>Website Reporting</h4>
+								<p>Lorem ipsum dolor sit ameti ctetur aoi adipiscing eto.</p>
+							</div>
+							<div class="showed-content">
+								<img src="{{asset('images/portfolio-image.png')}}" alt="">
+							</div>
+						</div>
+					</a>
+				</div>
+				<div class="col-lg-3 col-sm-6">
+					<a href="#">
+						<div class="item wow bounceInUp" data-wow-duration="1s" data-wow-delay="0.5s">
+							<div class="hidden-content">
+								<h4>Performance Tests</h4>
+								<p>Lorem ipsum dolor sit ameti ctetur aoi adipiscing eto.</p>
+							</div>
+							<div class="showed-content">
+								<img src="{{asset('images/portfolio-image.png')}}" alt="">
+							</div>
+						</div>
+					</a>
+				</div>
+				<div class="col-lg-3 col-sm-6">
+					<a href="#">
+						<div class="item wow bounceInUp" data-wow-duration="1s" data-wow-delay="0.6s">
+							<div class="hidden-content">
+								<h4>Data Analysis</h4>
+								<p>Lorem ipsum dolor sit ameti ctetur aoi adipiscing eto.</p>
+							</div>
+							<div class="showed-content">
+								<img src="{{asset('images/portfolio-image.png')}}" alt="">
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal du bouton soumettre une panne -->
+	<div class="modal fade" id="addPanneModal" tabindex="-1" role="dialog" aria-labelledby="addPanneModalLabel" aria-hidden="true" style="">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content" style="min-height: 430px;">
+				<div class="modal-header">
+					<h5 class="modal-title" id="addPanneModalLabel">Soumettre une panne</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form id="contact" action="{{ path('admin-show-panne') }}" method="post">
+						<div class="row">
+							<fieldset>
+								<div class="form-group">
+									<select name="materiel" id="materielForAdminUpdateMateriel" required
+										style="">
+										<option value="" selected>Choisissez le matériel en panne</option>
+										{% for materiel in materiels %}
+										<option value="{{ materiel.numeroSerie }}">{{ materiel.numeroSerie }}</option>
+										{% endfor %}
+									</select>
+								</div>
+							</fieldset>
+							<fieldset>
+								<div class="form-group mb-4">
+									<select name="type_panne" id="typeForAdminUpdateMateriel" required
+										style="">
+										<option value="" selected>Choisissez le type de la panne</option>
+										<option value="Logicielle">Logicielle</option>
+										<option value="Materielle">Materielle</option>
+									</select>
+								</div>
+							</fieldset>
+							<fieldset>
+								<div class="form-group mb-4">
+									<textarea name="description" id="descriptionPanneForAdminAddPPanne" cols="30"
+                                    rows="10"></textarea>
+								</div>
+							</fieldset>
+						</div>
+						<div class="col-lg-12 text-center">
+							<fieldset>
+								<button type="submit" class="main-button">Ajouter</button>
+							</fieldset>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal du bouton modifier une panne -->
+	<div class="modal fade" id="updatePanneModal" tabindex="-1" role="dialog" aria-labelledby="updatePanneModalLabel" aria-hidden="true" style="top: 100px!important;">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content" style="min-height: 430px;">
+				<div class="modal-header">
+					<h5 class="modal-title" id="updatePanneModalLabel">Modifier une panne</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form id="contact" action="{{ path('admin-update-panne') }}" method="post">
+						<div class="row">
+							<fieldset>
+								<div class="form-group">
+									<select name="etat" id="etatForAdminUpdatePanne" required
+										style="">
+										<option value="non réparée">Non réparée</option>
+										<option value="réparée">Réparée</option>
+									</select>
+								</div>
+							</fieldset>
+							<fieldset>
+								<div class="form-group mb-4">
+									<select name="type_panne" id="typeForAdminUpdatePanne" required
+										style="">
+										<option value="Logicielle">Logicielle</option>
+										<option value="Materielle">Materielle</option>
+									</select>
+								</div>
+							</fieldset>
+							<fieldset>
+								<div class="form-group mb-4">
+									<textarea name="description" id="descriptionPanneForAdminUpdatePanne" cols="30"
+                                    rows="10"></textarea>
+								</div>
+								<div class="form-group">
+									<input type="hidden" name="id" id="idForAdminUpdatePanne">
+								</div>
+							</fieldset>
+						</div>
+						<div class="col-lg-12 text-center">
+							<fieldset>
+								<button type="submit" class="main-button">Ajouter</button>
+							</fieldset>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal du bouton supprimer une panne -->
+	<div class="modal fade" id="deletePanneModal" tabindex="-1" role="dialog" aria-labelledby="deletePanneModalLabel" aria-hidden="true" style="top: 100px!important;">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content" style="min-height: 230px;">
+				<div class="modal-header">
+					<h5 class="modal-title" id="deleteMaterielModalLabel">Supprimer une panne</h5>
+				</div>			
+				<div class="modal-body">
+					<form action="{{ path('admin-delete-panne') }}" method="post">
+						<div class="row">
+							<fieldset>
+								<div class="form-group text-center" id="confirmDeleteMaterielText">
+									<p>Voulez-vous vraiment supprimer cette panne? </p>
+								</div>
+							</fieldset>
+							<div class="form-group">
+								<input type="hidden" name="id" id="idForAdminDeletePanne">
+							</div>
+							<div class="col-lg-12 text-center">
+								<button type="submit" class="btn btn-danger">Supprimer</button>
+								<button class="btn btn-primary" onclick="backDelete()">Annuler</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		function addPanne(){
+			$("#addPanneModal").modal('show');
+		}
+		function updatePanne(id, type, description, etat){
+			$("#updatePanneModal").modal('show');
+			
+			console.log(id);
+			console.log(type);
+			console.log(description);
+			console.log(etat);
+			document.getElementById('idForAdminUpdatePanne').value = id;
+			document.getElementById('typeForAdminUpdatePanne').value = type;
+			document.getElementById('descriptionPanneForAdminUpdatePanne').value = description;
+			document.getElementById('etatForAdminUpdatePanne').value = etat;
+
+		}
+		function deletePanne(id){
+			$("#deletePanneModal").modal('show');
+			document.getElementById('idForAdminDeletePanne').value = id;
+		}
+		function backDelete(){
+			$("#deletePanneModal").modal('hide');
+		}
+	</script>
+{% endblock %}

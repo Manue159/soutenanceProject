@@ -1,0 +1,143 @@
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+
+home:
+  path: /
+  controller: App\Controller\HomeController::index
+
+login:
+  path: /connexion
+  controller: App\Controller\LoginController::index
+
+register:
+  path: /inscription
+  controller: App\Controller\RegisterController::index
+
+logout:
+  path: /deconnexion
+  controller: App\Controller\LoginController::logout
+
+forgot-password:
+  path: /mot-de-passe-oublie
+  controller: App\Controller\ForgotPasswordController::index
+
+change-password:
+  path: /changer-mot-de-passe
+  controller: App\Controller\ResetPasswordController::index
+
+faq:
+  path: /faq
+  controller: App\Controller\FAQController::index
+
+panne:
+  path: /pannes
+  controller: App\Controller\FAQController::index
+# a supprimer
+employe:
+  path: /employe
+  controller: App\Controller\EmployeController::index
+
+employe-show-panne:
+  path: /employe-show-pannes
+  controller: App\Controller\AdminController::employeShowPanne
+  
+employe-add-panne:
+  path: /employe-add-pannes
+  controller: App\Controller\AdminController::employeAddPanne
+  
+technicien:
+  path: /technicien
+  controller: App\Controller\TechnicienController::index
+
+technicien-show-materiel:
+  path: /technicien-show-materiels
+  controller: App\Controller\TechnicienController::showMateriel
+ 
+technicien-add-materiel:
+  path: /technicien-add-materiels
+  controller: App\Controller\TechnicienController::technicienAddMateriel
+ 
+technicien-update-materiel:
+  path: /technicien-update-materiels
+  controller: App\Controller\TechnicienController::technicienUpdateMateriel
+ 
+technicien-delete-materiel:
+  path: /technicien-delete-materiels
+  controller: App\Controller\TechnicienController::technicienDeleteMateriel
+ 
+technicien-show-panne:
+  path: /technicien-show-pannes
+  controller: App\Controller\TechnicienController::technicienShowPanne
+  
+technicien-add-panne:
+  path: /technicien-add-pannes
+  controller: App\Controller\TechnicienController::technicienAddPanne
+  
+technicien-update-panne:
+  path: /technicien-uppdate-pannes
+  controller: App\Controller\TechnicienController::technicienUpdatePanne
+  
+admin:
+  path: /admin
+  controller: App\Controller\AdminController::index
+
+admin-show-panne:
+  path: /admin-show-pannes
+  controller: App\Controller\AdminController::adminShowPanne
+  
+admin-add-panne:
+  path: /admin-add-pannes
+  controller: App\Controller\AdminController::adminAddPanne
+  
+admin-update-panne:
+  path: /admin-update-pannes
+  controller: App\Controller\AdminController::adminUpdatePanne
+  
+admin-delete-panne:
+  path: /admin-delete-pannes
+  controller: App\Controller\AdminController::adminUpdatePanne
+  
+admin-show-employe:
+  path: /admin-show-employes
+  controller: App\Controller\AdminController::adminShowEmploye
+
+admin-add-employe:
+  path: /admin-show-employe
+  controller: App\Controller\AdminController::adminAddEmploye
+
+admin-update-employe:
+  path: /admin-update-employe
+  controller: App\Controller\AdminController::adminUpdateEmploye
+
+admin-delete-employe:
+  path: /admin-delete-employe
+  controller: App\Controller\AdminController::adminDeleteEmploye
+
+admin-show-materiel:
+  path: /admin-show-materiels
+  controller: App\Controller\AdminController::adminShowMateriel
+
+admin-add-materiel:
+  path: /admin-add-materiels
+  controller: App\Controller\AdminController::adminAddMateriel
+
+admin-add-type:
+  path: /admin-add-type
+  controller: App\Controller\AdminController::adminAddTypeMateriel
+
+admin-add-emplacement:
+  path: /admin-add-emplacement
+  controller: App\Controller\AdminController::adminAddEmplacementMateriel
+
+admin-update-materiel:
+  path: /admin-update-materiel
+  controller: App\Controller\AdminController::adminUpdateMateriel
+
+admin-delete-materiel:
+  path: /admin-delete-materiel
+  controller: App\Controller\AdminController::adminDeleteMateriel
+
+admin-faq:
+  path: /admin-show-faq
+  controller: App\Controller\AdminController::adminAddFaq

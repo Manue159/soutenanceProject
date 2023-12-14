@@ -1,0 +1,285 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Materiels
+{% endblock %}
+
+{% block body %}
+
+	<div id="portfolio" class="our-portfolio section">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6 offset-lg-3">
+					<div class="section-heading  wow bounceIn" data-wow-duration="1s" data-wow-delay="0.2s">
+						<h2>
+							<em>Liste</em>
+							du
+							<span>materiel</span>
+						</h2>
+					</div>
+					<div class="text-center" style="margin-bottom: 20%">
+						<a class="btn btn-primary" onclick="addEmplacement()">Ajouter un emplacement</a>
+						<a class="btn btn-primary" onclick="addMateriel()">Ajouter un materiel</a>
+						<a class="btn btn-primary" onclick="addType()">Ajouter un type</a>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				{% for materiels in materielsList %}
+					{% set materiel = materiels.materiel %}
+					{% set type = materiels.type %}
+					{% set emplacement = materiels.emplacement %}
+					<div class="col-lg-3 col-sm-6" style="margin-bottom: 5%">
+						<a href="#">
+							<div class="item wow bounceInUp" data-wow-duration="1s" data-wow-delay="0.3s">
+								<div class="hidden-content">
+									<p>{{ materiel.numeroSerie }}</p>
+									<p>{{ emplacement }}</p>
+									<p>{{ type }}</p>
+								</div>
+								<div class="showed-content">								
+                                    <img src="{{asset('images/materiel.png')}}" alt="">
+								</div>
+							</div>
+							<div class="text-center" style="margin-top: 5%">
+								<button class="btn btn-primary" onclick="updateMateriel('{{materiel.id}}', '{{materiel.numeroSerie}}', '{{ type }}', '{{ emplacement }}')">Modifier</button>
+								<button class="btn btn-danger" onclick="deleteMateriel('{{materiel.id}}', '{{materiel.numeroSerie}}')">Supprimer</button>
+							</div>
+						</a>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal du bouton ajouter un emplacement -->
+	<div class="modal fade" id="addEmplacementModal" tabindex="-1" role="dialog" aria-labelledby="addEmplacementModalLabel" aria-hidden="true" style="top: 100px!important;">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content" style="min-height: 430px;">
+				<div class="modal-header">
+					<h5 class="modal-title" id="addEmplacementModalLabel">Modifier les informations d'un employé</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form id="contact" action="{{ path('admin-add-emplacement') }}" method="post">
+						<div class="row">
+							<fieldset>
+								<div class="form-group">
+									<input type="text" placeholder="Entrez le nom de l'emplacement à ajouter" name="libelleEmplacement" id="libelleForAdminAddEmplacement" class="form-control" required>
+								</div>
+							</fieldset>
+						</div>
+						<div class="col-lg-12 text-center">
+							<fieldset>
+								<button type="submit" class="main-button">Ajouter</button>
+							</fieldset>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal du bouton ajouter un type -->
+	<div class="modal fade" id="addTypeModal" tabindex="-1" role="dialog" aria-labelledby="addTypeModalLabel" aria-hidden="true" style="top: 100px!important;">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content" style="min-height: 430px;">
+				<div class="modal-header">
+					<h5 class="modal-title" id="addTypeModalLabel">Ajouter un type de matériel</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form id="contact" action="{{ path('admin-add-type') }}" method="post">
+						<div class="row">
+							<fieldset>
+								<div class="form-group">
+									<input type="text" placeholder="Entrez le type de matériel" name="libelleType" id="libelleForAdminAddType" class="form-control" required>
+								</div>
+							</fieldset>
+						</div>
+						<div class="col-lg-12 text-center">
+							<fieldset>
+								<button type="submit" class="main-button">Ajouter</button>
+							</fieldset>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal du bouton ajouter un materiel -->
+	<div class="modal fade" id="addMaterielModal" tabindex="-1" role="dialog" aria-labelledby="addMaterielModalLabel" aria-hidden="true" style="top: 100px!important;">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content" style="min-height: 430px;">
+				<div class="modal-header">
+					<h5 class="modal-title" id="addMaterielModalLabel">Ajouter un type de matériel</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form id="contact" action="{{ path('admin-add-materiel') }}" method="post">
+						<div class="row">
+							<fieldset>
+								<div class="form-group">
+									<input type="text" placeholder="Entrez le numero de série du matériel" name="numero_serie" id="numSerieForAdminAddMateriel" class="form-control" required>
+								</div>
+							</fieldset>
+							<fieldset>
+								<div class="form-group mb-4">
+									<select name="type_materiel" id="statutForAdminUpdateEmploye" required style="margin-bottom: 0">
+										<option value="" selected>Choisissez un type de matériel</option>
+										{% for type in typesMateriels %}
+											<option value="{{type.libelle}}">{{type.libelle}}</option>
+										{% endfor %}
+									</select>
+								</div>
+							</fieldset>
+							<fieldset>
+								<div class="form-group mb-4">
+									<select name="emplacement_materiel" id="statutForAdminUpdateEmploye" required>
+										<option value="" selected>Choisissez l'emplacement du matériel</option>
+										{% for emplacement in emplacementsMateriels %}
+											<option value="{{emplacement.libelle}}">{{emplacement.libelle}}</option>
+										{% endfor %}
+									</select>
+								</div>
+							</fieldset>
+						</div>
+						<div class="col-lg-12 text-center">
+							<fieldset>
+								<button type="submit" class="main-button">Ajouter</button>
+							</fieldset>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal du bouton modifier un materiel -->
+	<div class="modal fade" id="updateMaterielModal" tabindex="-1" role="dialog" aria-labelledby="updateMaterielModalLabel" aria-hidden="true" style="top: 100px!important;">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content" style="min-height: 430px;">
+				<div class="modal-header">
+					<h5 class="modal-title" id="updateMaterielModalLabel">Modifier un matériel</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form id="contact" action="{{ path('admin-update-materiel') }}" method="post">
+						<div class="row">
+							<fieldset>
+								<div class="form-group">
+									<input type="text" placeholder="Entrez le numero de série du matériel" name="numero_serie" id="numSerieForAdminUpdateMateriel" class="form-control" required>
+								</div>
+								<div class="form-group">
+									<input type="hidden" name="id" id="idForAdminUpdateMateriel" class="form-control" required>
+								</div>
+							</fieldset>
+							<fieldset>
+								<div class="form-group mb-4">
+									<select name="type_materiel" id="typeForAdminUpdateMateriel" required style="margin-bottom: 0">
+										<option value="" selected>Choisissez un type de matériel</option>
+										{% for type in typesMateriels %}
+											<option value="{{type.libelle}}">{{type.libelle}}</option>
+										{% endfor %}
+									</select>
+								</div>
+							</fieldset>
+							<fieldset>
+								<div class="form-group mb-4">
+									<select name="emplacement_materiel" id="emplacementForAdminUpdateMateriel" required>
+										<option value="" selected>Choisissez l'emplacement du matériel</option>
+										{% for emplacement in emplacementsMateriels %}
+											<option value="{{emplacement.libelle}}">{{emplacement.libelle}}</option>
+										{% endfor %}
+									</select>
+								</div>
+							</fieldset>
+						</div>
+						<div class="col-lg-12 text-center">
+							<fieldset>
+								<button type="submit" class="main-button">Ajouter</button>
+							</fieldset>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal du bouton supprimer un materiel -->
+	<div class="modal fade" id="deleteMaterielModal" tabindex="-1" role="dialog" aria-labelledby="deleteMaterielModalLabel" aria-hidden="true" style="top: 100px!important;">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content" style="min-height: 230px;">
+				<div class="modal-header">
+					<h5 class="modal-title" id="deleteMaterielModalLabel">Supprimer un materiel</h5>
+				</div>
+				<div class="modal-body">
+					<form action="{{ path('admin-delete-materiel') }}" method="post">
+						<div class="row">
+							<fieldset>
+								<div class="form-group" id="confirmDeleteMaterielText"></div>
+							</fieldset>
+							<div class="form-group">
+								<input type="hidden" name="id" id="idForAdminDeleteMateriel">
+							</div>
+							<div class="col-lg-12 text-center">
+								<button type="submit" class="btn btn-danger">Supprimer</button>
+								<button class="btn btn-primary" onclick="backDelete()">Annuler</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		function addEmplacement(){
+			$("#addEmplacementModal").modal('show');
+			
+		}
+
+		function addType(){
+			$("#addTypeModal").modal('show');
+
+		}
+
+		function addMateriel(){
+			$("#addMaterielModal").modal('show');
+
+		}
+
+		function updateMateriel(id, numero_serie, type, emplacement){
+			$("#updateMaterielModal").modal('show');
+			
+			document.getElementById('idForAdminUpdateMateriel').value = id;
+			document.getElementById('numSerieForAdminUpdateMateriel').value = numero_serie;
+			document.getElementById('typeForAdminUpdateMateriel').value = type;
+			document.getElementById('emplacementForAdminUpdateMateriel').value = emplacement;
+
+		}
+
+		function deleteMateriel(id, numero_serie){
+			$("#deleteMaterielModal").modal('show');
+
+			document.getElementById('idForAdminDeleteMateriel').value = id;
+			document.getElementById('confirmDeleteMaterielText').innerHTML = '<p style="font-size: 15px"> Vous êtes sur le point de supprimer le materiel : ' + numero_serie + '. Voulez-vous vraiment le supprimer?</p>';
+
+		}
+
+		function backDelete(){
+			$("#deleteMaterielModal").modal('hide');
+		}
+		
+	</script>
+
+{% endblock %}
+

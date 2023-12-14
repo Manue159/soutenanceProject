@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<title>Login Template</title>
+
+		<link rel="stylesheet" href="{{ asset('css/fontawesome.css') }}">
+		<link rel="stylesheet" href="{{ asset('css/templatemo-space-dynamic.css') }}">
+		<link rel="stylesheet" href="{{ asset('css/animated.css') }}">
+		<link rel="stylesheet" href="{{ asset('css/owl.css') }}">
+		<link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+		<script src="{{ asset('fontawesome/js/all.js') }}"></script>
+		<link rel="preconnect" href="https://fonts.gstatic.com">
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> {% block stylesheets %}{% endblock %}{% block javascripts %}{% endblock %}
+		</head>
+	</html>
+
+	<body>
+
+		<div id="contact" class="contact-us section">
+			<div class="container" style="display: flex; justify-content: center">
+				<div class="col-lg-6 wow fadeInRight" data-wow-duration="0.5s" data-wow-delay="0.25s">
+					<form id="contact" action="{{ path('register') }}" method="post">
+						<div class="row">
+							<a href="{{ path('home')}}" style="display: right"><i class="fas fa-times"></i></a>
+							<div class="col-lg-12">
+								<div class="form-group text-center">
+									{% for message in app.flashes('error') %}
+										<div class="alert alert-danger" role="alert">
+											{{message}}
+										</div>
+									{% endfor %}
+								</div>
+								<div class="text-center" style="margin-bottom: 5%">
+									<h1>Inscription</h1>
+								</div>
+								<fieldset>
+									<div class="form-group">
+										<input type="text" placeholder="Entrez votre nom" name="nom" id="nom" class="form-control" required>
+									</div>
+								</fieldset>
+								<fieldset>
+									<div class="form-group">
+										<input type="text" placeholder="Entrez votre prénom" name="prenom" id="prenom" class="form-control" required>
+									</div>
+								</fieldset>
+						 		<fieldset>
+									<div class="form-group">
+										<input type="text" placeholder="Entrez votre email" name="email" id="email" class="form-control" required>
+									</div>
+								</fieldset>
+								<fieldset>
+									<div class="form-group mb-4">
+										<input type="password" placeholder="Entrez un mot de passe" name="password" id="password" class="form-control" required>
+									</div>
+								</fieldset>
+								<fieldset>
+									<div class="form-group">
+										<select name="pole" id="pole" required>
+											<option value="">Choisissez votre pôle</option>
+											<option value="ADV">ADV</option>
+											<option value="Assistant de Direction">Assistant(e) de Direction</option>
+											<option value="Chauffeur">Chauffeur</option>
+											<option value="Commercial">Commercial</option>
+											<option value="Comptabilite">Comptabilité</option>
+											<option value="Controleur de gestion">Controleur de gestion</option>
+											<option value="Datacenter et energie">Datacentter & energie</option>
+											<option value="Infrastructure Informatique et Software">Infrastructure Informatique & Software</option>
+											<option value="Ingenieur Reseaux et Securite">Ingénieur Reseaux et Securite</option>
+											<option value="Lift">Lift</option>
+											<option value="Magasinier">Magasinier</option>
+											<option value="Professionnal Services Manager">Professionnal Services Manager</option>
+											<option value="Project Management Officer">Project Management Officer</option>
+											<option value="Responsable Agence">Responsable Agence</option>
+											<option value="Responsable Administratif et Financier">Responsable Administratif et Financier</option>
+											<option value="Services Delivery Manager">Services Delivery Manager</option>
+											<option value="Utilisateur">Utilisateur</option>
+										</select>
+									</div>
+								</fieldset>
+								<fieldset>
+									<div class="form-group mb-4">
+										<select name="statut" id="statut" required>
+											<option value="">Choisissez votre statut</option>
+											<option value="Disponible">Disponible</option>
+											<option value="Malade">Malade</option>
+											<option value="Mission">Mission</option>
+											<option value="Permissionnaire">Permissionnaire</option>
+											<option value="Sur Site">Sur Site</option>
+										</select>
+									</div>
+								</fieldset>
+							</div>
+							<div class="col-lg-12 text-center">
+								<fieldset>
+									<button type="submit" id="form-submit" class="main-button">S'inscrire</button>
+								</fieldset>
+							</div>
+							<div class="col-lg-12" style="margin-top: 10%">
+								Vous avez déjà un compte?
+								<a href="{{ path('login') }}"> Connectez-vous </a>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+</div></div><script src="{{ asset('js/owl-carousel.js') }}"></script><script src="{{ asset('js/animation.js') }}"></script><script src="{{ asset('js/imagesloaded.js') }}"></script><script src="{{ asset('js/custom.js') }}"></script><script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script><script src="{{ asset('js/jquery.min.js') }}"></script></body>

@@ -1,0 +1,253 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Employés
+{% endblock %}
+
+{% block body %}
+	<div id="portfolio" class="our-portfolio section">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6 offset-lg-3">
+					<div class="section-heading  wow bounceIn" data-wow-duration="1s" data-wow-delay="0.2s">
+						<h2>
+							<em>Liste</em>
+							des
+							<span>Employés</span>
+						</h2>
+					</div>
+					<div class="text-center" style="margin-bottom: 20%">
+						<a class="btn btn-primary" onclick="addEmploye()">Ajouter un employé</a>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				{% for employe in employes %}
+					<div class="col-lg-3 col-sm-6" style="margin-bottom: 5%">
+                        <div class="item wow bounceInUp" data-wow-duration="1s" data-wow-delay="0.3s">
+                            <div class="hidden-content">
+                                <p>
+                                    {{employe.pole}} <br>
+                                    {{employe.email}}
+                                </p>
+                            </div>
+                            <div class="showed-content" id="employe_showed_content">
+                                <h5> {{ employe.prenom }} {{ employe.nom }}</h5>
+                                <p>{{employe.statut}}</p>
+                            </div>
+                        </div>
+						<div class="text-center" style="margin-top: 5%">
+							<button class="btn btn-primary" onclick="updateEmploye('{{ employe.id }}', '{{ employe.nom }}', '{{ employe.prenom }}', '{{ employe.email }}', '{{ employe.pole }}', '{{ employe.statut }}')">Modifier</button>
+							<button class="btn btn-danger" onclick="deleteEmploye('{{employe.id}}', '{{employe.nom}}', '{{employe.prenom}}')">Supprimer</button>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal du bouton ajouter un employé -->
+	<div class="modal fade" id="addEmployeModal" tabindex="-1" role="dialog" aria-labelledby="addEmployeModalLabel" aria-hidden="true" style="top: 100px!important;">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content" style="min-height: 430px;">
+				<div class="modal-header">
+					<h5 class="modal-title" id="addEmployeModalLabel">Ajouter un employé</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form id="contact" action="{{ path('admin-add-employe') }}" method="post">
+						<div class="row">
+								<fieldset>
+									<div class="form-group">
+										<input type="text" placeholder="Entrez votre nom" name="nom" id="nomForAdminAddEmploye" class="form-control" required>
+									</div>
+								</fieldset>
+								<fieldset>
+									<div class="form-group">
+										<input type="text" placeholder="Entrez votre prénom" name="prenom" id="prenomForAdminAddEmploye" class="form-control" required>
+									</div>
+								</fieldset>
+								<fieldset>
+									<div class="form-group">
+										<input type="text" placeholder="Entrez votre email" name="email" id="emailForAdminAddEmploye" class="form-control" required>
+									</div>
+								</fieldset>
+								<fieldset>
+									<div class="form-group">
+										<select name="pole" id="poleForAdminAddEmploye" required>
+											<option value="">Choisissez votre pôle</option>
+											<option value="ADV">ADV</option>
+											<option value="Assistant de Direction">Assistant(e) de Direction</option>
+											<option value="Chauffeur">Chauffeur</option>
+											<option value="Commercial">Commercial</option>
+											<option value="Comptabilite">Comptabilité</option>
+											<option value="Controleur de gestion">Controleur de gestion</option>
+											<option value="Datacenter et energie">Datacentter & energie</option>
+											<option value="Infrastructure Informatique et Software">Infrastructure Informatique & Software</option>
+											<option value="Ingenieur Reseaux et Securite">Ingénieur Reseaux et Securite</option>
+											<option value="Lift">Lift</option>
+											<option value="Magasinier">Magasinier</option>
+											<option value="Professionnal Services Manager">Professionnal Services Manager</option>
+											<option value="Project Management Officer">Project Management Officer</option>
+											<option value="Responsable Agence">Responsable Agence</option>
+											<option value="Responsable Administratif et Financier">Responsable Administratif et Financier</option>
+											<option value="Services Delivery Manager">Services Delivery Manager</option>
+											<option value="Utilisateur">Utilisateur</option>
+										</select>
+									</div>
+								</fieldset>
+							</div>
+							<div class="col-lg-12 text-center">
+								<fieldset>
+									<button type="submit" class="main-button">Ajouter</button>
+								</fieldset>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal du bouton modifier un employé -->
+	<div class="modal fade" id="updateEmployeModal" tabindex="-1" role="dialog" aria-labelledby="updateEmployeModalLabel" aria-hidden="true" style="top: 100px!important;">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content" style="min-height: 430px;">
+				<div class="modal-header">
+					<h5 class="modal-title" id="updateEmployeModalLabel">Modifier les informations d'un employé</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form id="contact" action="{{ path('admin-update-employe') }}" method="post">
+						<div class="row">
+								<fieldset>
+									<div class="form-group">
+										<input type="text" placeholder="Entrez votre nom" name="nom" id="nomForAdminUpdateEmploye" class="form-control" required>
+									</div>
+								</fieldset>
+								<fieldset>
+									<div class="form-group">
+										<input type="text" placeholder="Entrez votre prénom" name="prenom" id="prenomForAdminUpdateEmploye" class="form-control" required>
+									</div>
+								</fieldset>
+								<fieldset>
+									<div class="form-group">
+										<input type="text" placeholder="Entrez votre email" name="email" id="emailForAdminUpdateEmploye" class="form-control" required>
+									</div>
+								</fieldset>
+								<fieldset>
+									<div class="form-group">
+										<select name="pole" id="poleForAdminUpdateEmploye" required>
+											<option value="">Choisissez votre pôle</option>
+											<option value="ADV">ADV</option>
+											<option value="Assistant de Direction">Assistant(e) de Direction</option>
+											<option value="Chauffeur">Chauffeur</option>
+											<option value="Commercial">Commercial</option>
+											<option value="Comptabilite">Comptabilité</option>
+											<option value="Controleur de gestion">Controleur de gestion</option>
+											<option value="Datacenter et energie">Datacentter & energie</option>
+											<option value="Infrastructure Informatique et Software">Infrastructure Informatique & Software</option>
+											<option value="Ingenieur Reseaux et Securite">Ingénieur Reseaux et Securite</option>
+											<option value="Lift">Lift</option>
+											<option value="Magasinier">Magasinier</option>
+											<option value="Professionnal Services Manager">Professionnal Services Manager</option>
+											<option value="Project Management Officer">Project Management Officer</option>
+											<option value="Responsable Agence">Responsable Agence</option>
+											<option value="Responsable Administratif et Financier">Responsable Administratif et Financier</option>
+											<option value="Services Delivery Manager">Services Delivery Manager</option>
+											<option value="Utilisateur">Utilisateur</option>
+										</select>
+									</div>
+								</fieldset>
+								<fieldset>
+									<div class="form-group mb-4">
+										<select name="statut" id="statutForAdminUpdateEmploye" required>
+											<option value="">Choisissez votre statut</option>
+											<option value="Disponible">Disponible</option>
+											<option value="Malade">Malade</option>
+											<option value="Mission">Mission</option>
+											<option value="Permissionnaire">Permissionnaire</option>
+											<option value="Sur Site">Sur Site</option>
+										</select>
+									</div>
+									<div class="form-group mb-4">
+										<input type="hidden" name="id" id="idForAdminUpdateEmploye">
+									</div>
+								</fieldset>
+							</div>
+							<div class="col-lg-12 text-center">
+								<fieldset>
+									<button type="submit" class="main-button">Modifier</button>
+								</fieldset>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal du bouton supprimer un employé -->
+	<div class="modal fade" id="deleteEmployeModal" tabindex="-1" role="dialog" aria-labelledby="deleteEmployeModalLabel" aria-hidden="true" style="top: 100px!important;">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content" style="min-height: 230px;">
+				<div class="modal-header">
+					<h5 class="modal-title" id="deleteEmployeModalLabel">Supprimer un employé</h5>
+				</div>
+				<div class="modal-body">
+					<form action="{{ path('admin-delete-employe') }}" method="post">
+						<div class="row">
+							<fieldset>
+								<div class="form-group" id="confirmDeleteEmployeText">
+								</div>
+							</fieldset>
+							<div class="form-group">
+								<input type="hidden" name="id" id="idForAdminDeleteEmploye">
+							</div>
+							<div class="col-lg-12 text-center">
+								<button type="submit" class="btn btn-danger">Supprimer</button>
+								<button class="btn btn-primary" onclick="backDelete()">Annuler</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<script>
+		function addEmploye(){
+			$("#addEmployeModal").modal('show');
+		}
+		
+		function deleteEmploye(id, nom, prenom)
+		{
+			$("#deleteEmployeModal").modal('show');
+
+			document.getElementById('idForAdminDeleteEmploye').value = id;
+
+			document.getElementById('confirmDeleteEmployeText').innerHTML = '<p style="font-size: 15px"> Vous êtes sur le point de supprimer l\'employé : ' + nom + ' ' + prenom + '. Voulez-vous vraiment le supprimer?</p>';
+		}
+
+		function backDelete(){
+			$("#deleteEmployeModal").modal('hide');
+		}
+
+		function updateEmploye(id, nom, prenom, email, pole, statut){
+			$("#updateEmployeModal").modal('show');
+
+			document.getElementById('idForAdminUpdateEmploye').value = id;
+			document.getElementById('nomForAdminUpdateEmploye').value = nom;
+			document.getElementById('prenomForAdminUpdateEmploye').value = prenom;
+			document.getElementById('emailForAdminUpdateEmploye').value = email;
+			document.getElementById('poleForAdminUpdateEmploye').value = pole;
+			document.getElementById('statutForAdminUpdateEmploye').value = statut;
+		}
+	</script>
+
+{% endblock %}
+
